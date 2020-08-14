@@ -1,0 +1,125 @@
+*vim-marginalia*  Lightweight plugin for writing and managing notes.
+
+==============================================================================
+CONTENTS                                                    *vim-marginalia-toc*
+
+  1. Introduction                                  |vim-marginalia-introduction|
+  2. Commands                                          |vim-marginalia-commands|
+  3. Global options                                     |vim-marginalia-options|
+  4. Suggested key mappings                        |vim-marginalia-key-mappings|
+  5. FAQ                                                    |vim-marginalia-faq|
+  6. License                                            |vim-marginalia-license|
+
+==============================================================================
+INTRODUCTION                                       *vim-marginalia-introduction*
+
+Marginalia is a lightweight plugin for writing and managing notes. It aims to
+be a good, unobtrusive Vim citizen, and it relies on built-in functionality,
+e.g., |:grep| and |gf| , does not introduce changes to the |filetype| of your
+notes, or shadow your existing key bindings.
+
+The plugin supports creating and editing notes, listing all your notes, finding
+backlinks, and searching your notes by tags.
+
+==============================================================================
+COMMANDS                                               *vim-marginalia-commands*
+
+:MarginaliaNewNote {title}                                  :*MarginaliaNewNote*
+  Creates a new note with with the given [title].
+
+:MarginaliaEditNote {title}                                *:MarginaliaEditNote*
+  Edits the note with the given [title]. This command supports tab completion.
+
+:MarginaliaFindBacklinks                              *:MarginaliaFindBacklinks*
+  Finds references to the current note.
+
+:MarginaliaFindTagReferences [{tag}]              *:MarginaliaFindTagReferences*
+  Finds references to the given tag or the tag under the cursor.
+
+:MarginaliaConvertWordToTag                        *:MarginaliaConvertWordToTag*
+  Converts the word under the cursor to a tag.
+
+==============================================================================
+GLOBAL OPTIONS                                          *vim-marginalia-options*
+
+g:marginalia_notes_path                                *g:marginalia_notes_path*
+
+  Type: |String|
+  Default: `~/notes`
+
+  Configures where notes are stored.
+
+g:marginalia_file_extension                        *g:marginalia_file_extension*
+
+  Type: |String|
+  Default: `.md`
+
+  Configures the default file extension for notes.
+
+g:marginalia_header_format                          *g:marginalia_header_format*
+
+  Type: |String|
+  Default: `#`
+
+  Configures the header format used when creating new notes.
+
+g:marginalia_tag_identifier                        *g:marginalia_tag_identifier*
+
+  Type: |String|
+  Default: `#`
+
+  Configures the identifier used for searching and creating tags.
+
+g:marginalia_file_prefix_function            *g:marginalia_file_prefix_function*
+
+  Type: |String|
+  Default: `marginalia#default_file_prefix_function`
+
+  Configures the file prefix function used when creating new notes. By
+  default, `marginalia#default_file_prefix_function`` expands to
+  `strftime('%Y%m%d%H%M-')``.
+
+==============================================================================
+SUGGESTED KEY MAPPINGS                             *vim-marginalia-key-mappings*
+>
+  nnoremap <Leader>mnn :MarginaliaNew<Space>
+  nnoremap <Leader>men :MarginaliaEdit<Space>
+  nnoremap <silent><Leader>mln :MarginaliaList<CR>
+  nnoremap <silent><Leader>mfb :MarginaliaFindBacklinks<CR>
+  nnoremap <Leader>mft :MarginaliaFindTagReferences<Space>
+  nnoremap <silent><Leader>mcw :MarginaliaConvertWordToTag<CR>
+>
+==============================================================================
+FAQ                                                         *vim-marginalia-faq*
+
+Q: How can I use folders for storing my notes?
+
+A: Simply define a prefix function that returns an empty string:
+>
+  function! EmptyPrefix() abort
+    return ''
+  endfunction
+
+  let g:marginalia_file_prefix_function = 'EmptyPrefix'
+<
+Now when you run |:MarginaliaNewNote| `technology/vim`, a new note with the name
+`vim` is stored in your `technology` folder.
+
+Q: Can I use wiki-style links?
+
+A: Yes. In fact, this behavior can be enabled anywhere in Vim. For notes in
+Markdown format, simply add
+>
+  set suffixesadd=.md`
+<
+to your |vimrc|, and you can now visit links, e.g., `[[today-i-learned-vim]]`,
+using |gf|.
+
+==============================================================================
+LICENSE                                                 *vim-marginalia-license*
+
+Marginalia is released under the ISC license. See
+https://github.com/majjoha/vim-marginalia/LICENSE for more information.
+
+==============================================================================
+vim:tw=78:sw=2:ts=2:ft=help:norl:nowrap:
